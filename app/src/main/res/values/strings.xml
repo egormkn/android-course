@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Load Image Demo</string>
+    <string name="example_1">Network on UI 1</string>
+    <string name="example_2">Network on UI 2</string>
+    <string name="async_task_1">AsyncTask 1</string>
+    <string name="async_task_2">AsyncTask 2</string>
+    <string name="async_task_3">AsyncTask 3</string>
+    <string name="loader">Loader</string>
+    <string name="image_description">Фоточка</string>
+</resources>
