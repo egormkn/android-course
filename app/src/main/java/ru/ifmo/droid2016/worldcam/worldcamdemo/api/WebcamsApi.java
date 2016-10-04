@@ -37,7 +37,7 @@ public final class WebcamsApi {
                 .appendPath("webcams")
                 .appendPath("list")
                 .appendEncodedPath("nearby=" + latitude + "," + longitude + "," + radius)
-                //.appendQueryParameter("show", "webcams:base,image,location")
+                .appendQueryParameter("show", "webcams:base,image,location")
                 .build();
         HttpURLConnection connection = (HttpURLConnection) new URL(uri.toString()).openConnection();
         connection.setRequestProperty(KEY_HEADER_NAME, API_KEY);
