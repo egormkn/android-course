@@ -66,6 +66,8 @@ X-Mashape-Key: <ключ API>
 
 Для отладки запросов можно открыть URL [chrome://inspect](chrome://inspect) в браузере Chrome, там открыть раздел Devices, открыть работающее приложение и смотреть логи траифика во вкладке Network. 
 
+Решение: [ветка task1](https://github.com/IFMO-Android-2016/practice2/compare/task1)
+
 ## Задание №2 - JSON парсер 
 
 Ответ на запрос nearby приходит в формате JSON, который содержит список найденных веб-камер. В рамках нашего приложения нас интересуют три поля у каждой веб-камеры: ID, заголовок и URL на статическое изображение. Нужно написать парсер, который на вхож принимает `InputStream` из ответа на запрос nearby, а в качестве результата возвращает список объектов типа `Webcam`.
@@ -77,6 +79,8 @@ X-Mashape-Key: <ключ API>
 
 В парсере следует использовать класс [JSONObject](https://developer.android.com/reference/org/json/JSONObject.html)
 
+Решение: [ветка task2](https://github.com/IFMO-Android-2016/practice2/compare/task1...task2)
+
 ## Задание №3 - отображение списка в RecyclerView
 
 После выполнения первых двух заданий список вебкамер приходит в метод `NearbyWebcamsActivity.onLoadFinished` -- теперь остается только показать результат на экране при помощи `RecyclerView`. Верстка экрана уже заготовлена в `res/layout/nearby_webcams_activity.xml`: в ней есть `RecyclerView` и `ProgressBar`. Нужно написать код, который показывает индикатор процесса загрузки при помощи `ProgressBar` и список камер в `RecyclerView`.
@@ -85,3 +89,5 @@ X-Mashape-Key: <ключ API>
 * Написать код, который при открытии экрана показывает `ProgressBar`, а после завершения загрузки его скрывает.
 * Написать реализацию класса `RecyclerView.Adapter` для отображения списка веб-камер. В качестве верстки элемента списка использовать `res/layout/item_webcam.xml`
 * Написать код в `NearbyWebcamsActivity.onLoadFinished`, который обрабатывет полученный результат
+
+Решение: [ветка task3](https://github.com/IFMO-Android-2016/practice2/compare/task2...task3)
