@@ -62,7 +62,7 @@ public class NearbyWebcamsLoader extends AsyncTaskLoader<LoadResult<List<Webcam>
                 in = connection.getInputStream();
                 in = stethoManager.interpretResponseStream(in);
 
-                IOUtils.readFully(in);
+                data = WebcamsDomParser.parseWebcams(in);
 
                 resultType = ResultType.OK;
 
