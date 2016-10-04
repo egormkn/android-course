@@ -43,10 +43,10 @@ public class NearbyWebcamsLoader extends AsyncTaskLoader<LoadResult<List<Webcam>
 
         ResultType resultType = ResultType.ERROR;
         List<Webcam> data = null;
+        HttpURLConnection connection = null;
 
         try {
-            final HttpURLConnection connection =
-                    WebcamsApi.createNearbyRequest(latitude, longitude, DEFAULT_RADIUS_KM);
+            connection = WebcamsApi.createNearbyRequest(latitude, longitude, DEFAULT_RADIUS_KM);
             Log.d(TAG, "Performing request: " + connection.getURL());
 
             stethoManager.preConnect(connection, null);
@@ -64,6 +64,11 @@ public class NearbyWebcamsLoader extends AsyncTaskLoader<LoadResult<List<Webcam>
 
         } catch (Exception e) {
             Log.e(TAG, "Failed to get webcams: ", e);
+
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
         }
 
         return new LoadResult<>(resultType, data);
