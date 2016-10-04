@@ -78,6 +78,11 @@ public class NearbyWebcamsLoader extends AsyncTaskLoader<LoadResult<List<Webcam>
 
         } catch (IOException e) {
             stethoManager.httpExchangeFailed(e);
+            if (IOUtils.isConnectionAvailable(getContext(), false)) {
+                resultType = ResultType.ERROR;
+            } else {
+                resultType = ResultType.NO_INTERNET;
+            }
 
         } catch (Exception e) {
             Log.e(TAG, "Failed to get webcams: ", e);
