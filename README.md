@@ -53,7 +53,7 @@
 URL запроса должен выглядеть так:
 
 ```
-https://webcamstravel.p.mashape.com/webcams/list/nearby={latitude},{longitude},{radius}?show=webcams:basic,image,location
+https://webcamstravel.p.mashape.com/webcams/list/nearby={latitude},{longitude},{radius}?show=webcams:base,image,location
 ```
 А для авторизации приложения в API к запросу должен быть добавлен HTTP заголовок с ключом API:
 ```
