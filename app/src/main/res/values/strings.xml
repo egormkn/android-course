@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Ok IFMO Demo</string>
+    <string name="logout">Выйти</string>
+    <string name="error">Ошибка</string>
+    <string name="ok_demo">OK Demo</string>
+    <string name="no_internet">Отсуствует соединение</string>
+</resources>
