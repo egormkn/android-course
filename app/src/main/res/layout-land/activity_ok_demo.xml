@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <FrameLayout
-        android:layout_width="wrap_content"
+        android:layout_width="320dp"
         android:layout_height="match_parent">
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/user_photo"
