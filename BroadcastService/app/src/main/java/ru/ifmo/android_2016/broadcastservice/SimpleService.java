@@ -85,6 +85,7 @@ public final class SimpleService extends Service implements Runnable {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
+                break;
             }
 
             step++;
