@@ -1,6 +1,7 @@
 package ru.ifmo.droid2016.filesdbdemo.demoapp;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -86,6 +87,7 @@ public class SelectCityActivity extends Activity {
                         null /*limit*/);
             }
         });
+
         autoCompleteTextView.setAdapter(adapter);
 
         autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -99,10 +101,25 @@ public class SelectCityActivity extends Activity {
 
                     Log.d(TAG, "onItemClick: name=" + name + " lat=" + latitude
                             + " lon=" + longitude);
+                    startWebacms(name, latitude, longitude);
                 }
 
             }
         });
+    }
+
+    void startWebacms(String cityName, double latitude, double longitude) {
+        try  {
+            Intent intent = new Intent("ru.ifmo.droid2016.worldcam.SHOW");
+            intent.setClassName("ru.ifmo.droid2016.worldcam.worldcamdemo",
+                    "ru.ifmo.droid2016.worldcam.worldcamdemo.NearbyWebcamsActivity");
+            intent.putExtra("lat", latitude);
+            intent.putExtra("lng", longitude);
+            startActivity(intent);
+
+        } catch (Exception e) {
+            Log.e(TAG, "startWebcams: failed to start Webcams application: " + e, e);
+        }
     }
 
     private static final String TAG = "SelectCity";

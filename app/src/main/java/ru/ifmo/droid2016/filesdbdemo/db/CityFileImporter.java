@@ -2,6 +2,7 @@ package ru.ifmo.droid2016.filesdbdemo.db;
 
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -23,6 +24,7 @@ import ru.ifmo.droid2016.filesdbdemo.util.ProgressCallback;
 public abstract class CityFileImporter implements CityParserCallback {
 
     private SQLiteDatabase db;
+    private SQLiteStatement insertStatement;
     private int importedCount;
 
     CityFileImporter(SQLiteDatabase db) {
@@ -36,6 +38,9 @@ public abstract class CityFileImporter implements CityParserCallback {
 
         InputStream in = null;
 
+//        db.beginTransaction();
+//        insertStatement = prepareInsertStatement(db);
+
         try {
             long fileSize = srcFile.length();
             in = new FileInputStream(srcFile);
@@ -43,6 +48,7 @@ public abstract class CityFileImporter implements CityParserCallback {
             in = new ObservableInputStream(in, fileSize, progressCallback);
             in = new GZIPInputStream(in);
             importCities(in, cancelHandle);
+//            db.setTransactionSuccessful();
 
         } finally {
             if (in != null) {
@@ -52,6 +58,8 @@ public abstract class CityFileImporter implements CityParserCallback {
                     Log.e(LOG_TAG, "Failed to close file: " + e, e);
                 }
             }
+//            insertStatement.close();
+//            db.endTransaction();
         }
     }
 
@@ -95,6 +103,38 @@ public abstract class CityFileImporter implements CityParserCallback {
             return false;
         }
         return true;
+    }
+
+    private boolean insertCity(SQLiteStatement insertStatement,
+                               long id,
+                               @NonNull String name,
+                               @NonNull String country,
+                               double latitude,
+                               double longitude) {
+        insertStatement.clearBindings();
+        insertStatement.bindLong(1, id);
+        insertStatement.bindString(2, name);
+        insertStatement.bindString(3, country);
+        insertStatement.bindDouble(4, latitude);
+        insertStatement.bindDouble(5, longitude);
+
+        final long rowId = insertStatement.executeInsert();
+        if (rowId < 0) {
+            Log.w(LOG_TAG, "Failed to insert city: id=" + id + " name=" + name);
+            return false;
+        }
+        return true;
+    }
+
+    private SQLiteStatement prepareInsertStatement(SQLiteDatabase db) {
+        return db.compileStatement("INSERT INTO "
+                + CityContract.Cities.TABLE + " ("
+                + CityContract.CityColumns.CITY_ID + ","
+                + CityContract.CityColumns.NAME + ","
+                + CityContract.CityColumns.COUNTRY + ","
+                + CityContract.CityColumns.LATITUDE + ","
+                + CityContract.CityColumns.LONGITUDE
+                + ") VALUES (?,?,?,?,?)");
     }
 
     private static final String LOG_TAG = "CityReader";
