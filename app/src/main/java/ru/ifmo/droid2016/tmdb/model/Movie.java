@@ -12,7 +12,7 @@ public class Movie {
     /**
      * Path изображения постера фильма. Как из Path получить URL, описано здесь:
      *
-     * https://developers.themoviedb.org/3/getting-started/languages
+     * https://developers.themoviedb.org/3/getting-started/images
      *
      * В рамках ДЗ можно не выполнять отдельный запрос /configuration, а использовать
      * базовый URL для картинок: http://image.tmdb.org/t/p/ и
