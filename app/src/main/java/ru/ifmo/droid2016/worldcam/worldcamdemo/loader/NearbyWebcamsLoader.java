@@ -7,12 +7,14 @@ import android.util.Log;
 import com.facebook.stetho.urlconnection.StethoURLConnectionManager;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.util.List;
 
 import ru.ifmo.droid2016.worldcam.worldcamdemo.api.WebcamsApi;
 import ru.ifmo.droid2016.worldcam.worldcamdemo.model.Webcam;
+import ru.ifmo.droid2016.worldcam.worldcamdemo.utils.IOUtils;
 
 /**
  * Загрузчик списка камер в некотором радиусе от указанных координат.
@@ -43,7 +45,9 @@ public class NearbyWebcamsLoader extends AsyncTaskLoader<LoadResult<List<Webcam>
 
         ResultType resultType = ResultType.ERROR;
         List<Webcam> data = null;
+
         HttpURLConnection connection = null;
+        InputStream in = null;
 
         try {
             connection = WebcamsApi.createNearbyRequest(latitude, longitude, DEFAULT_RADIUS_KM);
@@ -53,7 +57,20 @@ public class NearbyWebcamsLoader extends AsyncTaskLoader<LoadResult<List<Webcam>
             connection.connect();
             stethoManager.postConnect();
 
-            // TODO: прочитать и обработать ответ
+            if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+
+                in = connection.getInputStream();
+                in = stethoManager.interpretResponseStream(in);
+
+                data = WebcamsDomParser.parseWebcams(in);
+
+                resultType = ResultType.OK;
+
+            } else {
+                // consider all other codes as errors
+                throw new BadResponseException("HTTP: " + connection.getResponseCode()
+                        + ", " + connection.getResponseMessage());
+            }
 
 
         } catch (MalformedURLException e) {
@@ -61,11 +78,17 @@ public class NearbyWebcamsLoader extends AsyncTaskLoader<LoadResult<List<Webcam>
 
         } catch (IOException e) {
             stethoManager.httpExchangeFailed(e);
+            if (IOUtils.isConnectionAvailable(getContext(), false)) {
+                resultType = ResultType.ERROR;
+            } else {
+                resultType = ResultType.NO_INTERNET;
+            }
 
         } catch (Exception e) {
             Log.e(TAG, "Failed to get webcams: ", e);
 
         } finally {
+            IOUtils.closeSilently(in);
             if (connection != null) {
                 connection.disconnect();
             }

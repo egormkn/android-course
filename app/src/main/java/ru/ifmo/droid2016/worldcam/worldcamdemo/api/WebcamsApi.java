@@ -1,5 +1,7 @@
 package ru.ifmo.droid2016.worldcam.worldcamdemo.api;
 
+import android.net.Uri;
+
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -31,8 +33,15 @@ public final class WebcamsApi {
     public static HttpURLConnection createNearbyRequest(double latitude,
                                                         double longitude,
                                                         double radius) throws IOException {
-        // TODO
-        return (HttpURLConnection) new URL(BASE_URL).openConnection();
+        Uri uri = Uri.parse(BASE_URL).buildUpon()
+                .appendPath("webcams")
+                .appendPath("list")
+                .appendEncodedPath("nearby=" + latitude + "," + longitude + "," + radius)
+                .appendQueryParameter("show", "webcams:base,image,location")
+                .build();
+        HttpURLConnection connection = (HttpURLConnection) new URL(uri.toString()).openConnection();
+        connection.setRequestProperty(KEY_HEADER_NAME, API_KEY);
+        return connection;
     }
 
     private WebcamsApi() {}
