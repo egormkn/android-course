@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MyTheme" parent="@style/AppTheme">
+        <item name="android:windowBackground">@android:color/black</item>
+
+        <item name="android:textSize">40sp</item>
+        <item name="android:textColor">@android:color/white</item>
+
+        <item name="strokeColor">@android:color/holo_red_dark</item>
+        <item name="radius">40dp</item>
+
+        <item name="android:buttonStyle">@style/MyButton</item>
+    </style>
+
+    <style name="MyButton" parent="@android:style/Widget.Button">
+        <item name="android:textColor">@android:color/holo_green_dark</item>
+        <item name="android:background">@drawable/state_list_light</item>
+    </style>
+</resources>
